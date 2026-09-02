@@ -1,0 +1,84 @@
+---
+import ProseLayout from '../layouts/ProseLayout.astro';
+import { site, contact } from '../config/site';
+import { withBase } from '../lib/url';
+---
+
+<ProseLayout
+  title="Cookie policy"
+  eyebrow="Legal"
+  description={`${site.domain} sets no cookies and runs no analytics.`}
+  lastUpdated="21 August 2026"
+>
+  <div class="mb-10 rounded-[2px] border border-rule bg-accent-wash p-5 text-accent-ink">
+    <p class="text-[0.9375rem] leading-relaxed">
+      <strong class="font-semibold">Draft pending legal review.</strong> This
+      page describes the site as currently built. If analytics or any embedded
+      third-party content is added later, it must be updated &mdash; and a
+      consent banner will be required.
+    </p>
+  </div>
+
+  <h2>The short version</h2>
+  <p>
+    {site.domain} sets <strong>no cookies</strong>. We run no analytics, no
+    advertising pixels, no session tracking and no embedded third-party
+    content. There is nothing here to consent to, which is why you were not
+    asked.
+  </p>
+
+  <h2>What that means in practice</h2>
+  <ul>
+    <li>
+      <strong>No first-party cookies.</strong> The site is static. It has no
+      login, no shopping basket and no personalisation, so it has nothing to
+      remember about you between visits.
+    </li>
+    <li>
+      <strong>No analytics.</strong> We do not measure your visit. We have no
+      idea which pages you read.
+    </li>
+    <li>
+      <strong>No third-party embeds.</strong> Fonts are self-hosted from our own
+      domain rather than loaded from a font CDN, so no external service sees
+      your request.
+    </li>
+    <li>
+      <strong>No advertising or social tracking.</strong> Links to LinkedIn are
+      ordinary links. Nothing is loaded from social platforms until you click
+      through.
+    </li>
+  </ul>
+
+  <h2>What still happens without cookies</h2>
+  <p>
+    Two things involve a third party, neither of which uses cookies to track
+    you:
+  </p>
+  <ul>
+    <li>
+      <strong>Form submissions.</strong> When you submit a form, its contents
+      are sent to Web3Forms, which delivers them to our mailbox. This happens
+      only when you press Send.
+    </li>
+    <li>
+      <strong>Server logs.</strong> Our host records standard technical request
+      data for security and reliability, as described in the{' '}
+      <a href={withBase('/privacy')}>privacy policy</a>.
+    </li>
+  </ul>
+
+  <h2>Your browser&rsquo;s local storage</h2>
+  <p>
+    We do not write to <code>localStorage</code>, <code>sessionStorage</code> or
+    IndexedDB either.
+  </p>
+
+  <h2>If this changes</h2>
+  <p>
+    If we ever add analytics, we will use a cookieless, privacy-preserving
+    provider where possible, update this page, and add a consent banner if the
+    provider requires one. Questions:{' '}
+    <a href={`mailto:${contact.general}`}>{contact.general}</a>.
+  </p>
+</ProseLayout>

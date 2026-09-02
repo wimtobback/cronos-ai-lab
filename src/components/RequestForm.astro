@@ -1,0 +1,191 @@
+---
+import { forms, isFormsConfigured, contact, site } from '../config/site';
+import { withBase, absoluteUrl } from '../lib/url';
+
+interface FormField {
+  name: string;
+  label: string;
+  type: 'text' | 'email' | 'tel' | 'url' | 'textarea' | 'select';
+  required: boolean;
+  placeholder?: string;
+  options?: string[];
+  half: boolean;
+}
+
+interface Props {
+  /** Identifies the submission in the inbox, e.g. "Request for AI Talent". */
+  subject: string;
+  title: string;
+  lead: string;
+  fields: FormField[];
+  /** Fallback mailbox shown when the form backend is not configured. */
+  email?: string;
+}
+
+const {
+  subject,
+  title,
+  lead,
+  fields,
+  email = contact.general,
+} = Astro.props;
+
+const inputClass =
+  'w-full rounded-[2px] border border-rule bg-paper-raised px-4 py-3 text-[0.9375rem] text-ink placeholder:text-muted/70 transition-colors hover:border-muted/60 focus:border-ink focus:outline-none disabled:cursor-not-allowed disabled:opacity-60';
+---
+
+<div class="rounded-[2px] border border-rule bg-paper-raised p-6 sm:p-10">
+  <h2 class="text-h2">{title}</h2>
+  <p class="mt-4 max-w-xl text-lead text-muted">{lead}</p>
+
+  {
+    !isFormsConfigured && (
+      <div
+        class="mt-8 rounded-[2px] border border-rule bg-accent-wash p-5"
+        role="status"
+      >
+        <p class="text-[0.9375rem] font-semibold text-accent-ink">
+          This form is not connected yet.
+        </p>
+        <p class="mt-2 text-[0.9375rem] leading-relaxed text-accent-ink/90">
+          Set <code class="font-mono text-[0.8125rem]">PUBLIC_WEB3FORMS_KEY</code>{' '}
+          in the environment to enable submissions. Until then, please email us
+          directly &mdash; we read everything.
+        </p>
+        <a
+          href={`mailto:${email}?subject=${encodeURIComponent(subject)}`}
+          class="btn btn-primary mt-5"
+        >
+          Email {email}
+        </a>
+      </div>
+    )
+  }
+
+  <form
+    method="POST"
+    action={forms.endpoint}
+    class="mt-10 grid grid-cols-1 gap-x-5 gap-y-6 sm:grid-cols-2"
+  >
+    {/* --- Web3Forms control fields ------------------------------------- */}
+    <input type="hidden" name="access_key" value={forms.accessKey} />
+    <input type="hidden" name="subject" value={`${subject} — ${site.domain}`} />
+    <input type="hidden" name="from_name" value={site.name} />
+    <input
+      type="hidden"
+      name="redirect"
+      value={absoluteUrl(forms.redirectPath, Astro.site ?? site.url)}
+    />
+
+    {/* Honeypot: hidden from people, irresistible to bots. */}
+    <label class="sr-only" aria-hidden="true">
+      Leave this field empty
+      <input
+        type="checkbox"
+        name="botcheck"
+        tabindex="-1"
+        autocomplete="off"
+      />
+    </label>
+
+    {/* --- Fields from frontmatter -------------------------------------- */}
+    {
+      fields.map((field) => (
+        <div class:list={[field.half ? 'sm:col-span-1' : 'sm:col-span-2']}>
+          <label
+            for={field.name}
+            class="block text-[0.8125rem] font-medium text-ink"
+          >
+            {field.label}
+            {field.required ? (
+              <span class="text-accent-ink"> *</span>
+            ) : (
+              <span class="font-normal text-muted"> (optional)</span>
+            )}
+          </label>
+
+          {field.type === 'textarea' ? (
+            <textarea
+              id={field.name}
+              name={field.name}
+              rows={5}
+              required={field.required}
+              disabled={!isFormsConfigured}
+              placeholder={field.placeholder}
+              class:list={['mt-2 resize-y', inputClass]}
+            />
+          ) : field.type === 'select' ? (
+            <select
+              id={field.name}
+              name={field.name}
+              required={field.required}
+              disabled={!isFormsConfigured}
+              class:list={['mt-2 field-select', inputClass]}
+            >
+              <option value="">Select&hellip;</option>
+              {(field.options ?? []).map((option) => (
+                <option value={option}>{option}</option>
+              ))}
+            </select>
+          ) : (
+            <input
+              id={field.name}
+              name={field.name}
+              type={field.type}
+              required={field.required}
+              disabled={!isFormsConfigured}
+              placeholder={field.placeholder}
+              autocomplete={
+                field.type === 'email'
+                  ? 'email'
+                  : field.name === 'name'
+                    ? 'name'
+                    : undefined
+              }
+              class:list={['mt-2', inputClass]}
+            />
+          )}
+        </div>
+      ))
+    }
+
+    {/* --- Consent ------------------------------------------------------- */}
+    <div class="sm:col-span-2">
+      <label class="flex items-start gap-3 text-[0.9375rem] leading-relaxed text-muted">
+        <input
+          type="checkbox"
+          name="consent"
+          value="yes"
+          required
+          disabled={!isFormsConfigured}
+          class="mt-1 size-4 shrink-0 rounded-[2px] border-rule accent-[var(--color-accent)]"
+        />
+        <span>
+          I agree that {site.name} may store and use these details to respond to
+          my request, as described in the{' '}
+          <a
+            href={withBase('/privacy')}
+            class="text-accent-ink underline underline-offset-2"
+          >
+            privacy policy
+          </a>
+          .
+        </span>
+      </label>
+    </div>
+
+    {/* --- Submit -------------------------------------------------------- */}
+    <div class="sm:col-span-2">
+      <button
+        type="submit"
+        disabled={!isFormsConfigured}
+        class="btn btn-primary disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        Send
+      </button>
+      <p class="mt-4 text-[0.8125rem] text-muted">
+        We reply to every submission within five working days.
+      </p>
+    </div>
+  </form>
+</div>

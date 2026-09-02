@@ -1,0 +1,57 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Reveal from '../components/Reveal.astro';
+import { contact } from '../config/site';
+import { withBase } from '../lib/url';
+
+const requests = (await getCollection('requests')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+---
+
+<BaseLayout
+  title="Thank you"
+  description="Your message has reached Cronos AI Lab."
+  noindex
+>
+  <section class="shell flex min-h-[60vh] items-center py-24">
+    <Reveal class="max-w-2xl">
+      <p class="eyebrow">Received</p>
+      <h1 class="mt-6 text-h1">Thank you &mdash; that reached us.</h1>
+      <p class="mt-7 text-lead text-muted">
+        A real person reads every submission. You will hear back within five
+        working days, including if the honest answer is no. If it is urgent, email{' '}
+        <a
+          href={`mailto:${contact.general}`}
+          class="text-accent-ink underline underline-offset-4"
+        >
+          {contact.general}
+        </a>.
+      </p>
+
+      <div class="mt-10 flex flex-col gap-3 sm:flex-row">
+        <a href={withBase('/')} class="btn btn-primary">Back to home</a>
+        <a href={withBase('/startups')} class="btn btn-secondary">See the startups</a>
+      </div>
+
+      <div class="mt-14 border-t border-rule pt-8">
+        <p class="eyebrow">While you wait</p>
+        <ul class="mt-4 flex flex-wrap gap-x-6 gap-y-2">
+          {
+            requests.map((request) => (
+              <li>
+                <a
+                  href={withBase(`/request-for-ai/${request.id}`)}
+                  class="text-[0.9375rem] text-muted transition-colors hover:text-ink"
+                >
+                  {request.data.shortTitle}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </Reveal>
+  </section>
+</BaseLayout>

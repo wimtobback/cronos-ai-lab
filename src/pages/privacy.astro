@@ -1,0 +1,162 @@
+---
+import ProseLayout from '../layouts/ProseLayout.astro';
+import { site, contact } from '../config/site';
+import { withBase } from '../lib/url';
+
+/**
+ * DRAFT — needs review by Cronos legal before launch.
+ * This is a working GDPR-shaped policy that matches what the site actually
+ * does today (one third-party form processor, no analytics, no cookies).
+ * If analytics or any other processor is added, this page must be updated.
+ */
+---
+
+<ProseLayout
+  title="Privacy policy"
+  eyebrow="Legal"
+  description={`How ${site.name} handles personal data submitted through this website.`}
+  lastUpdated="21 August 2026"
+>
+  <div class="mb-10 rounded-[2px] border border-rule bg-accent-wash p-5 text-accent-ink">
+    <p class="text-[0.9375rem] leading-relaxed">
+      <strong class="font-semibold">Draft pending legal review.</strong> This
+      policy accurately describes what the website currently does, but it has
+      not yet been reviewed by {site.parentOrg}&rsquo;s legal team. Replace this
+      notice once it has.
+    </p>
+  </div>
+
+  <p>
+    This policy explains what personal data {site.name} collects through{' '}
+    {site.domain}, why we collect it, and what rights you have under the EU
+    General Data Protection Regulation (GDPR).
+  </p>
+
+  <h2>Who is responsible</h2>
+  <p>
+    {site.name}, part of {site.parentOrg}, is the data controller for personal
+    data submitted through this website.
+  </p>
+  <p>
+    {contact.address.street}, {contact.address.postalCode}{' '}
+    {contact.address.city}, {contact.address.country}<br />
+    <a href={`mailto:${contact.general}`}>{contact.general}</a>
+  </p>
+
+  <h2>What we collect</h2>
+  <p>
+    We only collect what you choose to send us. There is no tracking on this
+    website.
+  </p>
+  <ul>
+    <li>
+      <strong>Form submissions.</strong> The fields you complete on a contact or
+      Request for AI form &mdash; typically your name, email address,
+      organisation, and the details of your enquiry.
+    </li>
+    <li>
+      <strong>Email correspondence.</strong> Anything you send us directly,
+      including any attachments.
+    </li>
+    <li>
+      <strong>Server logs.</strong> Our hosting provider records standard
+      technical request data (IP address, timestamp, requested URL, user agent)
+      for security and reliability. We do not use these logs to build a profile
+      of you.
+    </li>
+  </ul>
+
+  <h2>Why we process it</h2>
+  <ul>
+    <li>
+      <strong>To respond to your enquiry.</strong> Legal basis: your consent,
+      given when you tick the consent box before submitting a form, and our
+      legitimate interest in answering people who contact us.
+    </li>
+    <li>
+      <strong>To assess a possible working relationship</strong> &mdash; a
+      challenge, a startup partnership, a role, a founder conversation, or a
+      lab collaboration. Legal basis: steps taken at your request prior to
+      entering into a contract.
+    </li>
+    <li>
+      <strong>To keep the site secure and available.</strong> Legal basis: our
+      legitimate interest in operating the website.
+    </li>
+  </ul>
+  <p>
+    We do not sell your data, and we do not use it for automated
+    decision-making or profiling.
+  </p>
+
+  <h2>Who we share it with</h2>
+  <p>
+    Form submissions are transmitted by <strong>Web3Forms</strong>, which
+    delivers them to our mailbox on our behalf as a data processor. Email is
+    handled by {site.parentOrg}&rsquo;s corporate mail infrastructure. Website
+    hosting is provided by our hosting partner.
+  </p>
+  <p>
+    Depending on which route you use, your submission may be shared internally
+    with the relevant {site.parentOrg} team &mdash; for example, a challenge
+    enquiry may involve the practice that works with your sector. We do not
+    share it outside the group without your knowledge.
+  </p>
+
+  <h2>How long we keep it</h2>
+  <ul>
+    <li>
+      <strong>Enquiries that do not lead anywhere:</strong> deleted within 12
+      months.
+    </li>
+    <li>
+      <strong>Talent applications:</strong> retained for 12 months so we can
+      contact you about relevant roles, unless you ask us to delete them
+      sooner.
+    </li>
+    <li>
+      <strong>Ongoing relationships:</strong> retained for the duration of the
+      relationship and for as long as we are legally required to keep the
+      records afterwards.
+    </li>
+    <li><strong>Server logs:</strong> retained for a maximum of 90 days.</li>
+  </ul>
+
+  <h2>Your rights</h2>
+  <p>Under the GDPR you have the right to:</p>
+  <ul>
+    <li>access the personal data we hold about you;</li>
+    <li>have inaccurate data corrected;</li>
+    <li>have your data erased;</li>
+    <li>restrict or object to how we process it;</li>
+    <li>receive your data in a portable format;</li>
+    <li>withdraw consent at any time, without affecting past processing.</li>
+  </ul>
+  <p>
+    To exercise any of these, email{' '}
+    <a href={`mailto:${contact.general}`}>{contact.general}</a>. We respond
+    within one month.
+  </p>
+  <p>
+    If you are not satisfied with our response, you can lodge a complaint with
+    the Belgian Data Protection Authority (Gegevensbeschermingsautoriteit /
+    Autorité de protection des données),{' '}
+    <a
+      href="https://www.dataprotectionauthority.be"
+      target="_blank"
+      rel="noopener noreferrer">dataprotectionauthority.be</a
+    >.
+  </p>
+
+  <h2>Cookies</h2>
+  <p>
+    This website sets no cookies and runs no analytics. See our{' '}
+    <a href={withBase('/cookies')}>cookie policy</a> for detail.
+  </p>
+
+  <h2>Changes</h2>
+  <p>
+    We update this policy when what we do changes. The date at the top of the
+    page always reflects the current version.
+  </p>
+</ProseLayout>

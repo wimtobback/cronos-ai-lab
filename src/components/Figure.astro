@@ -1,0 +1,48 @@
+---
+// src/components/Figure.astro
+// A full-bleed photographic band for the interior pages.
+//
+// Same pipeline as the hero in Statement.astro, and for the same reasons:
+// astro:assets generates avif + webp at three widths, and `fallbackFormat`
+// is set because Astro pairs a webp source with a PNG fallback — without it a
+// 1920px source ships a multi-megabyte PNG that nothing ever renders.
+//
+// Unlike the hero this is `loading="lazy"`: it is always below the fold, and
+// the hero is the page's LCP element and should stay that way.
+import { Picture } from 'astro:assets';
+
+interface Props {
+  src: ImageMetadata;
+  /** Empty is correct when the band is decorative. */
+  alt?: string;
+  /** Optional line set below the image, in the shell so it aligns with copy. */
+  caption?: string;
+  class?: string;
+}
+
+const { src, alt = '', caption, class: className } = Astro.props;
+---
+
+<figure class:list={['figure-band', className]}>
+  <div class="bleed">
+    <Picture
+      src={src}
+      alt={alt}
+      widths={[768, 1280, 1920]}
+      sizes="100vw"
+      formats={['avif', 'webp']}
+      fallbackFormat="jpeg"
+      loading="lazy"
+      decoding="async"
+      class="figure-img"
+    />
+  </div>
+
+  {
+    caption && (
+      <figcaption class="shell figure-caption">
+        <p class="eyebrow">{caption}</p>
+      </figcaption>
+    )
+  }
+</figure>

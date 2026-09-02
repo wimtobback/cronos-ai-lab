@@ -1,0 +1,46 @@
+---
+// src/components/RuledRow.astro
+import { withBase } from '../lib/url';
+
+interface Props {
+  /** Mono label, upper-left. Typically an index number or sector. */
+  index?: string;
+  /** Mark rendered in the same upper-left track as `index`, e.g. a company
+   * logo. A row uses one or the other, never both. */
+  logo?: string;
+  title: string;
+  summary?: string;
+  /** Right-hand metadata, small and muted. */
+  meta?: string;
+  href?: string;
+  /** Larger type for a lead row. */
+  lead?: boolean;
+}
+const { index, logo, title, summary, meta, href, lead = false } = Astro.props;
+---
+
+<li class:list={['ruled-row', lead && 'is-lead']}>
+  {index && <p class="eyebrow ruled-row-index">{index}</p>}
+  {/* alt="" on purpose: the title beside it is already the row's accessible
+      name, so a described logo would announce the company twice. */}
+  {logo && (
+    <img
+      src={withBase(logo)}
+      alt=""
+      width="40"
+      height="40"
+      loading="lazy"
+      decoding="async"
+      class="mark ruled-row-logo"
+    />
+  )}
+
+  <div class="ruled-row-body">
+    <h3 class:list={[lead ? 'text-h2' : 'text-h3', 'ruled-row-title']}>
+      {href ? <a href={withBase(href)} class="ruled-row-link">{title}</a> : title}
+    </h3>
+    {summary && <p class="ruled-row-summary">{summary}</p>}
+  </div>
+
+  {meta && <p class="ruled-row-meta">{meta}</p>}
+</li>

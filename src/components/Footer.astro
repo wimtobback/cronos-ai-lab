@@ -1,0 +1,120 @@
+---
+import { getCollection } from 'astro:content';
+import Logo from './Logo.astro';
+import { site, contact, socials, footerNav } from '../config/site';
+import { withBase } from '../lib/url';
+
+const requests = (await getCollection('requests')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-rule">
+  <div class="shell py-16 md:py-20">
+    <div class="grid gap-12 md:grid-cols-12 md:gap-8">
+      <!-- Brand -->
+      <div class="md:col-span-4">
+        <Logo />
+        <p class="mt-4 max-w-xs text-[0.9375rem] leading-relaxed text-muted">
+          {site.description}
+        </p>
+        <ul class="mt-6 flex flex-wrap gap-2">
+          {
+            socials.map((social) => (
+              <li>
+                <a
+                  href={social.href}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  class="btn btn-secondary !px-4 !py-2 !text-sm"
+                >
+                  {social.label}
+                  <span class="sr-only">(opens in a new tab)</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <!-- Request for AI -->
+      <div class="md:col-span-3">
+        <h2 class="eyebrow">Request for AI</h2>
+        <ul class="mt-5 space-y-3">
+          {
+            requests.map((request) => (
+              <li>
+                <a
+                  href={withBase(`/request-for-ai/${request.id}`)}
+                  class="text-[0.9375rem] text-muted transition-colors hover:text-ink"
+                >
+                  {request.data.shortTitle}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <!-- Explore -->
+      <div class="md:col-span-2">
+        <h2 class="eyebrow">Explore</h2>
+        <ul class="mt-5 space-y-3">
+          {
+            footerNav.explore.map((item) => (
+              <li>
+                <a
+                  href={withBase(item.href)}
+                  class="text-[0.9375rem] text-muted transition-colors hover:text-ink"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div class="md:col-span-3">
+        <h2 class="eyebrow">Contact</h2>
+        <address class="mt-5 space-y-3 text-[0.9375rem] not-italic text-muted">
+          <p>
+            <a
+              href={`mailto:${contact.general}`}
+              class="transition-colors hover:text-ink"
+            >
+              {contact.general}
+            </a>
+          </p>
+          <p class="leading-relaxed">
+            {contact.address.street}<br />
+            {contact.address.postalCode} {contact.address.city}<br />
+            {contact.address.country}
+          </p>
+        </address>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div
+      class="mt-14 flex flex-col gap-4 border-t border-rule pt-8 sm:flex-row sm:items-center sm:justify-between"
+    >
+      <p class="eyebrow">
+        &copy; {year} {site.name} &middot; Part of {site.parentOrg}
+      </p>
+      <ul class="flex flex-wrap gap-x-6 gap-y-2">
+        {
+          footerNav.legal.map((item) => (
+            <li>
+              <a href={withBase(item.href)} class="eyebrow transition-colors hover:text-ink">
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</footer>

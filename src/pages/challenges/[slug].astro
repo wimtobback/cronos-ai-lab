@@ -1,0 +1,108 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Reveal from '../../components/Reveal.astro';
+import RuledList from '../../components/RuledList.astro';
+import RuledRow from '../../components/RuledRow.astro';
+import Figure from '../../components/Figure.astro';
+import { withBase } from '../../lib/url';
+
+export async function getStaticPaths() {
+  const challenges = await getCollection('challenges', ({ data }) => !data.draft);
+
+  return challenges.map((challenge) => ({
+    params: { slug: challenge.id },
+    props: {
+      challenge,
+      related: challenges.filter((c) => c.id !== challenge.id).slice(0, 3),
+    },
+  }));
+}
+
+const { challenge, related } = Astro.props;
+const d = challenge.data;
+const { Content } = await render(challenge);
+---
+
+<BaseLayout title={d.title} description={d.summary}>
+  <section class="shell pt-20 pb-14 md:pt-28">
+    <Reveal class="max-w-3xl">
+      <a
+        href={withBase('/challenges')}
+        class="eyebrow inline-flex items-center gap-2 transition-colors hover:text-ink"
+      >
+        <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M11 7H3m0 0 3.5-3.5M3 7l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        All challenges
+      </a>
+
+      <p class="eyebrow mt-10">{d.sector} &middot; {d.year}</p>
+      <h1 class="mt-5 text-h1">{d.title}</h1>
+      <p class="mt-7 text-lead text-muted">{d.summary}</p>
+    </Reveal>
+  </section>
+
+  <section class="shell story pb-section">
+    {/* Rail first in the DOM: on a narrow screen the facts read as a summary
+        above the article, and on desktop CSS places them to the right. */}
+    <Reveal class="story-rail">
+      <dl class="rail-facts">
+        {d.outcome && (
+          <div>
+            <dt class="eyebrow">Result</dt>
+            <dd class="rail-figure is-result">{d.outcome}</dd>
+          </div>
+        )}
+        <div>
+          <dt class="eyebrow">Client</dt>
+          <dd>{d.client}</dd>
+        </div>
+        <div>
+          <dt class="eyebrow">Sector</dt>
+          <dd>{d.sector}</dd>
+        </div>
+        <div>
+          <dt class="eyebrow">Year</dt>
+          <dd>{d.year}</dd>
+        </div>
+      </dl>
+    </Reveal>
+
+    <Reveal class="story-body prose">
+      <Content />
+    </Reveal>
+  </section>
+
+  {/* Renders only when the entry has a photograph. Nothing is a placeholder:
+      an entry without one is exactly as it was. */}
+  {d.image && (
+    <section class="shell">
+      <Figure src={d.image} alt={d.imageAlt} />
+    </section>
+  )}
+
+  {
+    related.length > 0 && (
+      <section class="shell pb-section" aria-labelledby="related">
+        <Reveal>
+          <div class="border-t border-ink pt-5">
+            <h2 id="related" class="font-mono text-[0.6875rem] font-medium uppercase tracking-[0.12em]">
+              More challenges
+            </h2>
+          </div>
+          <RuledList class="mt-8">
+            {related.map((item) => (
+              <RuledRow
+                index={String(item.data.year)}
+                title={item.data.title}
+                meta={item.data.sector}
+                href={`/challenges/${item.id}`}
+              />
+            ))}
+          </RuledList>
+        </Reveal>
+      </section>
+    )
+  }
+</BaseLayout>

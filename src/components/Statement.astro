@@ -1,0 +1,55 @@
+---
+// src/components/Statement.astro
+// Movement 1. Full-bleed photograph, one line at display scale, one CTA.
+// The photograph is the Cronos incubator building at dusk. It is bright where
+// the copy sits, so `.statement-media` carries a scrim and a screen layer —
+// see "Movement 1" in global.css.
+// `fallbackFormat` is set because Astro pairs a webp source with a PNG
+// fallback: without it the build ships a 2.1MB PNG (plus two more PNG
+// widths) that nothing ever renders. The previous .jpg source fell back to
+// jpeg on its own, so this only surfaced when the source became webp.
+// No stats grid: PLACEHOLDER.md records those numbers as fabricated, and
+// putting fabricated figures above the fold is a launch risk regardless of
+// how they look.
+import { Picture } from 'astro:assets';
+import { withBase } from '../lib/url';
+import statementImage from '../assets/photography/cronos-incubator.webp';
+---
+
+<section class="on-ink statement" aria-labelledby="statement-heading">
+  <div class="statement-media">
+    <Picture
+      src={statementImage}
+      alt=""
+      widths={[768, 1280, 1920, 2400]}
+      sizes="100vw"
+      formats={['avif', 'webp']}
+      fallbackFormat="jpeg"
+      loading="eager"
+      fetchpriority="high"
+      class="statement-img"
+    />
+  </div>
+
+  <div class="shell statement-body">
+    <div class="statement-copy">
+      <p class="eyebrow">Kontich &middot; part of The Cronos Group</p>
+
+      <h1 id="statement-heading" class="mt-6 text-display">
+        Enterprise AI problems, built into companies.
+      </h1>
+
+      <p class="mt-8 max-w-xl text-lead text-muted-invert">
+        The Lab pairs founders and engineers with the real operational problems
+        inside Belgium&rsquo;s largest organisations, then builds and funds the
+        companies that solve them.
+      </p>
+
+      <div class="mt-10">
+        <a href={withBase('/request-for-ai/challenges')} class="btn btn-primary">
+          Bring us a challenge
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

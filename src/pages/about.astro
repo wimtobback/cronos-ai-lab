@@ -1,0 +1,149 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Reveal from '../components/Reveal.astro';
+import RuledList from '../components/RuledList.astro';
+import RuledRow from '../components/RuledRow.astro';
+import { site, contact } from '../config/site';
+import { withBase } from '../lib/url';
+
+const principles = [
+  {
+    title: 'We start from demand, not invention',
+    body: 'We start from a problem someone is already paying to work around. Ideas are cheap; validated, budgeted urgency is not.',
+  },
+  {
+    title: 'Ninety days to a verdict',
+    body: 'Every engagement has a metric agreed before any code is written, and a date on which we say yes or no against it.',
+  },
+  {
+    title: 'We only count production',
+    body: 'A demo proves the model works. It proves nothing about whether the organisation will use it. We only count the second one.',
+  },
+  {
+    title: 'We say no out loud',
+    body: 'We have told clients they did not need AI, and killed our own builds. A partner who cannot say no is only a supplier.',
+  },
+];
+
+const timeline = [
+  { year: '2024', body: 'The Lab starts inside the Cronos Group with two engineers, one challenge and no portfolio.' },
+  { year: '2025', body: 'The Request for AI model is formalised, and the first joint projects run with partner and university labs.' },
+  { year: '2026', body: 'Five ventures sit in the portfolio, and the Request for AI model runs on every route in.' },
+];
+---
+
+<BaseLayout
+  title="About"
+  description={`${site.name} is the venture lab of ${site.parentOrg}. It runs enterprise AI problems to a ninety-day verdict, then builds the companies that follow.`}
+>
+  <section class="shell pt-20 pb-16 md:pt-28 md:pb-20">
+    <Reveal class="max-w-3xl">
+      <p class="eyebrow">About the Lab</p>
+      <h1 class="mt-6 text-h1">
+        A venture lab with an unfair advantage: the customers are already here.
+      </h1>
+      <p class="mt-8 text-lead text-muted">
+        {site.name} is the AI venture lab of {site.parentOrg}, a Belgian
+        technology group of more than 9,000 people working inside hundreds of
+        organisations across manufacturing, healthcare, logistics, finance and
+        the public sector.
+      </p>
+    </Reveal>
+  </section>
+
+  <div class="shell"><hr class="border-rule" /></div>
+
+  <section class="shell py-section">
+    <Reveal class="grid gap-10 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-4">
+        <p class="eyebrow">Why we exist</p>
+        <h2 class="mt-4 text-h2">The gap we were built to close.</h2>
+      </div>
+
+      <div class="prose lg:col-span-8">
+        <p>
+          Most AI ventures fail for the same unglamorous reason: they build
+          something impressive that nobody urgently needed. Meanwhile, large
+          organisations sit on expensive, specific, entirely unsolved problems
+          that never reach anyone capable of building a company around them.
+        </p>
+        <p>
+          The Lab exists in that gap. Because Cronos already works inside these
+          organisations, we hear about the problems before they become
+          consulting briefs &mdash; and we can test whether a solution is
+          genuinely wanted before a founder gives up their job for it.
+        </p>
+        <p>
+          What we do with that is deliberately narrow. We take on enterprise
+          challenges, run them to a measured verdict in ninety days, and where
+          the answer is a real and repeatable market, we build a company around
+          it with a founder, capital and a first customer already in place.
+        </p>
+      </div>
+    </Reveal>
+  </section>
+
+  {/* The one ink band between the two paper ones, so a long page reads as
+      movements rather than a single continuous scroll. Full-bleed, the same
+      shape as the homepage's Request for AI section. */}
+  <section class="on-ink">
+    <div class="shell py-section">
+      <Reveal>
+        <p class="eyebrow">Principles</p>
+        <h2 class="mt-4 max-w-2xl text-h2">How we work.</h2>
+
+        <RuledList class="mt-12">
+          {
+            principles.map((principle, i) => (
+              <RuledRow
+                index={String(i + 1).padStart(2, '0')}
+                title={principle.title}
+                summary={principle.body}
+              />
+            ))
+          }
+        </RuledList>
+      </Reveal>
+    </div>
+  </section>
+
+  <section class="shell py-section">
+    <Reveal>
+      <p class="eyebrow">History</p>
+      <h2 class="mt-4 max-w-2xl text-h2">Where we are so far.</h2>
+
+      <ol class="mt-12 grid grid-cols-1 gap-x-6 gap-y-10 md:grid-cols-3">
+        {
+          timeline.map((entry) => (
+            <li class="border-t border-ink pt-5">
+              <p class="font-display text-3xl leading-none">{entry.year}</p>
+              <p class="mt-4 leading-relaxed text-muted">{entry.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </Reveal>
+  </section>
+
+  <section class="on-ink">
+    <div class="shell py-section">
+      <Reveal class="max-w-2xl">
+        <p class="eyebrow">Come and find us</p>
+        <h2 class="mt-4 text-h2">
+          The fastest way in is to tell us something specific.
+        </h2>
+        <p class="mt-6 text-lead text-muted-invert">
+          Send us a problem you are stuck on, or something you have already
+          built. We answer every message within five working days &mdash;
+          including the ones where the honest answer is no.
+        </p>
+        <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+          <a href={withBase('/contact')} class="btn btn-primary">Contact us</a>
+          <a href={`mailto:${contact.general}`} class="btn btn-secondary">
+            {contact.general}
+          </a>
+        </div>
+      </Reveal>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,15 @@
+---
+// src/components/RuledList.astro
+// Replaces card grids in movements 3, 4 and 5. Rows are separated by a single
+// hairline, not boxed individually.
+interface Props {
+  class?: string;
+  /** Renders a leading rule above the first row. */
+  capped?: boolean;
+}
+const { class: className, capped = true } = Astro.props;
+---
+
+<ul class:list={['ruled-list', capped && 'is-capped', className]}>
+  <slot />
+</ul>

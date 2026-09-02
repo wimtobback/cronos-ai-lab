@@ -1,0 +1,50 @@
+---
+/**
+ * Scroll-reveal wrapper. The only client JS on the site.
+ * Content is hidden for animation only when the inline guard in BaseLayout
+ * has confirmed JS + IntersectionObserver and the user has not asked for
+ * reduced motion, so any failure degrades to visible rather than blank.
+ */
+export interface Props {
+  as?: keyof HTMLElementTagNameMap;
+  /** Stagger, in milliseconds. */
+  delay?: number;
+  class?: string;
+  id?: string;
+}
+
+const { as: Tag = 'div', delay = 0, class: className, id } = Astro.props;
+---
+
+<Tag
+  id={id}
+  data-reveal
+  class={className}
+  style={delay ? `--reveal-delay:${delay}ms` : undefined}
+>
+  <slot />
+</Tag>
+
+<script>
+  // Tells the inline head guard that the observer took over.
+  document.documentElement.setAttribute('data-reveal-ready', '');
+
+  const nodes = document.querySelectorAll<HTMLElement>('[data-reveal]');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (reduced || !('IntersectionObserver' in window)) {
+    nodes.forEach((node) => node.setAttribute('data-revealed', ''));
+  } else {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.setAttribute('data-revealed', '');
+          observer.unobserve(entry.target);
+        }
+      },
+      { rootMargin: '0px 0px -6% 0px', threshold: 0.05 },
+    );
+    nodes.forEach((node) => observer.observe(node));
+  }
+</script>

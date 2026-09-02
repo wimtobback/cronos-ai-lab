@@ -1,0 +1,32 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Reveal from '../components/Reveal.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  eyebrow?: string;
+  lastUpdated?: string;
+  noindex?: boolean;
+}
+
+const { title, description, eyebrow, lastUpdated, noindex } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} noindex={noindex}>
+  <article class="shell pt-20 pb-section md:pt-28">
+    <Reveal class="max-w-3xl">
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <h1 class="mt-6 text-h1">{title}</h1>
+      {
+        lastUpdated && (
+          <p class="eyebrow mt-6">Last updated {lastUpdated}</p>
+        )
+      }
+    </Reveal>
+
+    <Reveal class="prose mt-14 text-muted" delay={60}>
+      <slot />
+    </Reveal>
+  </article>
+</BaseLayout>

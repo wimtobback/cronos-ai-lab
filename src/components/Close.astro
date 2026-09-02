@@ -1,0 +1,17 @@
+---
+// src/components/Close.astro
+// Movement 6. Short by design — the page has said what it needs to.
+import { contact } from '../config/site';
+---
+
+<section class="shell close" aria-labelledby="close-heading">
+  <h2 id="close-heading" class="text-h2 close-heading">
+    Ninety days. Then an honest answer.
+  </h2>
+  <p class="close-contact">
+    <a href={`mailto:${contact.general}`} class="close-mail">{contact.general}</a>
+    <span class="eyebrow close-where">
+      {contact.address.street} &middot; {contact.address.postalCode} {contact.address.city}
+    </span>
+  </p>
+</section>

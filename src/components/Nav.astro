@@ -1,0 +1,244 @@
+---
+import { getCollection } from 'astro:content';
+import { Icon } from 'astro-icon/components';
+import Logo from './Logo.astro';
+import { primaryNav } from '../config/site';
+import { withBase, stripBase } from '../lib/url';
+
+// The five offerings drive the dropdown, so adding a sixth request .md file
+// puts it in the menu with no code change.
+const requests = (await getCollection('requests')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+
+// Compare against raw route paths, so strip the deploy base off first.
+const path = stripBase(Astro.url.pathname);
+const isCurrent = (href: string) =>
+  href.startsWith('/#') ? false : path === href || path.startsWith(href + '/');
+
+const navLinkClass =
+  'text-[0.9375rem] text-muted transition-colors hover:text-ink aria-[current=page]:text-ink aria-[current=page]:font-medium';
+---
+
+<header
+  class="sticky top-0 z-50 border-b border-rule bg-paper"
+>
+  <!-- `relative` anchors the dropdown panel to the shell rather than to the
+       trigger, so a wide panel can right-align without ever overflowing. -->
+  <div class="shell relative flex h-16 items-center justify-between gap-6 md:h-[4.5rem]">
+    <a href={withBase('/')} class="rounded-sm" aria-label="Cronos AI Lab — home">
+      <Logo />
+    </a>
+
+    <!-- Desktop -->
+    <nav aria-label="Primary" class="hidden items-center gap-8 md:flex">
+      {
+        primaryNav.map((item) =>
+          item.dropdown ? (
+            <details class="group" data-dropdown>
+              <summary
+                aria-current={isCurrent(item.href) ? 'page' : undefined}
+                class:list={[
+                  navLinkClass,
+                  'flex cursor-pointer list-none items-center gap-1.5 [&::-webkit-details-marker]:hidden',
+                ]}
+              >
+                {item.label}
+                <svg
+                  width="10"
+                  height="6"
+                  viewBox="0 0 12 8"
+                  fill="none"
+                  aria-hidden="true"
+                  class="transition-transform duration-200 group-open:rotate-180"
+                >
+                  <path
+                    d="M1 1.5 6 6.5l5-5"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </summary>
+
+              <div
+                class="absolute right-12 top-full mt-3 w-[38rem] rounded-[2px] border border-rule bg-paper-raised p-6 lg:w-[42rem]"
+              >
+                <div class="flex items-end justify-between gap-6 border-b border-rule pb-4">
+                  <div>
+                    <p class="eyebrow">Request for AI</p>
+                    <p class="mt-2 text-[0.9375rem] text-muted">
+                      Five ways to work with the Lab.
+                    </p>
+                  </div>
+                  <a
+                    href={withBase(item.href)}
+                    class="shrink-0 text-[0.8125rem] font-medium text-accent-ink underline-offset-4 hover:underline"
+                  >
+                    See all &rarr;
+                  </a>
+                </div>
+
+                {/* grid-flow-col over 3 explicit rows reads down-then-across:
+                    Challenges / Startups / Talent, then Founders / Labs /
+                    the CTA card as the sixth cell. */}
+                <ul class="mt-4 grid grid-cols-2 grid-rows-3 grid-flow-col gap-1">
+                  {requests.map((request) => (
+                    <li class="flex">
+                      <a
+                        href={withBase(`/request-for-ai/${request.id}`)}
+                        aria-current={
+                          path === `/request-for-ai/${request.id}` ? 'page' : undefined
+                        }
+                        class="group/item flex w-full gap-3 rounded-[2px] p-3 transition-colors hover:bg-paper aria-[current=page]:bg-paper"
+                      >
+                        <span class="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full border border-rule text-accent-ink transition-colors group-hover/item:border-ink group-hover/item:bg-ink group-hover/item:text-paper">
+                          <Icon name={request.data.icon} class="size-4" aria-hidden="true" />
+                        </span>
+                        <span class="min-w-0">
+                          <span class="block text-[0.9375rem] font-semibold text-ink">
+                            {request.data.shortTitle}
+                          </span>
+                          <span class="mt-1 block text-[0.8125rem] leading-snug text-muted">
+                            {request.data.summary}
+                          </span>
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+
+                  <li class="flex">
+                    <a
+                      href={withBase('/contact')}
+                      class="flex w-full flex-col justify-between rounded-[2px] bg-ink p-4 text-paper transition-colors hover:bg-accent hover:text-ink"
+                    >
+                      <span class="text-[0.9375rem] font-semibold">
+                        Not sure which fits?
+                      </span>
+                      <span class="mt-3 inline-flex items-center gap-1.5 font-mono text-[0.6875rem] font-medium uppercase tracking-[0.12em]">
+                        Talk to us &rarr;
+                      </span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </details>
+          ) : (
+            <a
+              href={withBase(item.href)}
+              aria-current={isCurrent(item.href) ? 'page' : undefined}
+              class={navLinkClass}
+            >
+              {item.label}
+            </a>
+          ),
+        )
+      }
+      <a href={withBase('/contact')} class="btn btn-primary">Talk to us</a>
+    </nav>
+
+    <!-- Mobile: native disclosure, no JavaScript -->
+    <details class="group relative md:hidden">
+      <summary
+        class="flex size-10 cursor-pointer list-none items-center justify-center rounded-full border border-rule [&::-webkit-details-marker]:hidden"
+        aria-label="Open menu"
+      >
+        <span class="sr-only">Menu</span>
+        <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" fill="none">
+          <path d="M2 5h14M2 9h14M2 13h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" class="group-open:hidden" />
+          <path d="M4 4l10 10M14 4L4 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" class="hidden group-open:block" />
+        </svg>
+      </summary>
+      <nav
+        aria-label="Primary"
+        class="absolute right-0 top-[calc(100%+0.75rem)] max-h-[calc(100dvh-6rem)] w-64 overflow-y-auto rounded-[2px] border border-rule bg-paper-raised p-2"
+      >
+        {
+          primaryNav.map((item) =>
+            item.dropdown ? (
+              /* Flat group rather than a nested <details> — everything stays
+                 visible in one scroll and there is no disclosure inside a
+                 disclosure to get wrong. */
+              <div class="my-2 border-y border-rule py-3">
+                <p class="px-3 pb-1">
+                  <a
+                    href={withBase(item.href)}
+                    class="eyebrow transition-colors hover:text-ink"
+                  >
+                    {item.label}
+                  </a>
+                </p>
+                {requests.map((request) => (
+                  <a
+                    href={withBase(`/request-for-ai/${request.id}`)}
+                    aria-current={
+                      path === `/request-for-ai/${request.id}` ? 'page' : undefined
+                    }
+                    class="flex items-center gap-2.5 rounded-[2px] px-3 py-2.5 text-[0.9375rem] text-ink hover:bg-paper aria-[current=page]:font-medium"
+                  >
+                    <Icon
+                      name={request.data.icon}
+                      class="size-4 shrink-0 text-accent-ink"
+                      aria-hidden="true"
+                    />
+                    {request.data.shortTitle}
+                  </a>
+                ))}
+              </div>
+            ) : (
+              <a
+                href={withBase(item.href)}
+                aria-current={isCurrent(item.href) ? 'page' : undefined}
+                class="block rounded-[2px] px-3 py-2.5 text-[0.9375rem] text-ink hover:bg-paper aria-[current=page]:font-medium"
+              >
+                {item.label}
+              </a>
+            ),
+          )
+        }
+        <a
+          href={withBase('/contact')}
+          class="mt-3 block rounded-[2px] bg-ink px-3 py-2.5 text-center text-[0.9375rem] font-medium text-paper"
+        >
+          Talk to us
+        </a>
+      </nav>
+    </details>
+  </div>
+</header>
+
+<script>
+  // Progressive enhancement for the desktop dropdown. Without this the
+  // <details> still opens and closes on click; this only adds the dismissal
+  // behaviour people expect from a menu.
+  document
+    .querySelectorAll<HTMLDetailsElement>('details[data-dropdown]')
+    .forEach((dropdown) => {
+      const trigger = dropdown.querySelector('summary');
+
+      // Click anywhere outside closes it.
+      document.addEventListener('click', (event) => {
+        if (dropdown.open && !dropdown.contains(event.target as Node)) {
+          dropdown.open = false;
+        }
+      });
+
+      // Escape closes it and hands focus back to the trigger. Bound to the
+      // document, not the panel: opening with the mouse can leave focus
+      // outside the <details>, and Escape must still work then.
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && dropdown.open) {
+          dropdown.open = false;
+          trigger?.focus();
+        }
+      });
+
+      // Tabbing past the last item closes it. Guarded on a real next target so
+      // that clicking dead space inside the panel does not dismiss it.
+      dropdown.addEventListener('focusout', (event) => {
+        const next = event.relatedTarget as Node | null;
+        if (next && !dropdown.contains(next)) dropdown.open = false;
+      });
+    });
+</script>

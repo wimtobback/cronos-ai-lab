@@ -1,0 +1,139 @@
+---
+import { Font } from 'astro:assets';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { site, contact, socials, blockSearchIndexing } from '../config/site';
+import { withBase, absoluteUrl } from '../lib/url';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Path under /public for the social share image. */
+  ogImage?: string;
+  /** Exclude from search engines (e.g. the thank-you page). */
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = site.description,
+  ogImage = '/og-default.png',
+  noindex = false,
+} = Astro.props;
+
+const pageTitle = title === site.name ? title : `${title} — ${site.name}`;
+const origin = Astro.site ?? new URL(site.url);
+// Astro.url.pathname already includes `base`, so do not re-prefix it here.
+// With build.format: 'file' it also carries a .html extension that the public
+// URLs never show, so strip that before emitting a canonical.
+const canonicalPath =
+  Astro.url.pathname
+    .replace(/\/index\.html$/, '')
+    .replace(/\.html$/, '')
+    .replace(/\/$/, '') || '/';
+const canonical = new URL(canonicalPath, origin);
+const ogImageUrl = new URL(absoluteUrl(ogImage, origin));
+
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: site.name,
+  url: absoluteUrl('/', origin),
+  description: site.description,
+  parentOrganization: { '@type': 'Organization', name: site.parentOrg },
+  email: contact.general,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: contact.address.street,
+    postalCode: contact.address.postalCode,
+    addressLocality: contact.address.city,
+    addressCountry: contact.address.country,
+  },
+  sameAs: socials.map((s) => s.href),
+};
+---
+
+<!doctype html>
+<html lang={site.locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
+    <link rel="apple-touch-icon" href={withBase('/apple-touch-icon.png')} />
+    <link rel="canonical" href={canonical.href} />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    {(noindex || blockSearchIndexing) && <meta name="robots" content="noindex, nofollow" />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:image" content={ogImageUrl.href} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl.href} />
+
+    <meta name="theme-color" content="#0b0b0c" />
+
+    <Font cssVariable="--ff-display" preload />
+    <Font cssVariable="--ff-body" preload />
+    <Font cssVariable="--ff-mono" />
+
+    <!--
+      Reveal guard. Content is hidden for animation ONLY if this script runs,
+      so a JS failure degrades to a fully visible page instead of a blank one.
+      The timeout is a second safety net: if the reveal module never executes,
+      un-hide everything rather than leaving the page empty.
+    -->
+    <script is:inline>
+      (function () {
+        var root = document.documentElement;
+        if (!('IntersectionObserver' in window)) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        root.classList.add('js-reveal');
+        setTimeout(function () {
+          if (!root.hasAttribute('data-reveal-ready')) {
+            root.classList.remove('js-reveal');
+          }
+        }, 2500);
+      })();
+    </script>
+
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(organizationSchema)}
+      is:inline
+    />
+
+    <!--
+      ANALYTICS: intentionally not shipped. If Cronos adds a cookieless,
+      GDPR-friendly analytics provider, drop the snippet here and update
+      /cookies accordingly. Anything that sets cookies needs a consent banner.
+      Example (Plausible, cookieless):
+      <script defer data-domain="cronos-ai-lab.be" src="https://plausible.io/js/script.js"></script>
+    -->
+  </head>
+
+  <body class="flex min-h-dvh flex-col">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-ink focus:px-5 focus:py-3 focus:text-sm focus:font-medium focus:text-paper"
+    >
+      Skip to content
+    </a>
+
+    <Nav />
+
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+
+    <Footer />
+  </body>
+</html>

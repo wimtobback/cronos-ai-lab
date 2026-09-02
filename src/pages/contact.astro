@@ -1,0 +1,144 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Reveal from '../components/Reveal.astro';
+import RequestForm from '../components/RequestForm.astro';
+import { contact, socials, site } from '../config/site';
+import { withBase } from '../lib/url';
+
+const requests = (await getCollection('requests')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+
+const fields = [
+  { name: 'name', label: 'Your name', type: 'text' as const, required: true, half: true },
+  { name: 'email', label: 'Email', type: 'email' as const, required: true, half: true },
+  { name: 'organisation', label: 'Organisation', type: 'text' as const, required: false, half: true },
+  {
+    name: 'topic',
+    label: 'What is this about?',
+    type: 'select' as const,
+    required: true,
+    half: true,
+    options: [
+      'General enquiry',
+      'Press or speaking',
+      'Partnership',
+      'Something else',
+    ],
+  },
+  {
+    name: 'message',
+    label: 'Message',
+    type: 'textarea' as const,
+    required: true,
+    half: false,
+    placeholder: 'Tell us what you need. Specific beats polite.',
+  },
+];
+---
+
+<BaseLayout
+  title="Contact"
+  description={`Get in touch with ${site.name} in Kontich, Belgium.`}
+>
+  <section class="shell pt-20 pb-16 md:pt-28 md:pb-20">
+    <Reveal class="max-w-3xl">
+      <p class="eyebrow">Contact</p>
+      <h1 class="mt-6 text-h1">Let&rsquo;s talk.</h1>
+      <p class="mt-7 text-lead text-muted">
+        If your message fits one of the five Request for AI routes, use that
+        form instead &mdash; it reaches the right person faster and asks the
+        questions we would otherwise have to email you about.
+      </p>
+    </Reveal>
+  </section>
+
+  <section class="shell pb-section">
+    <Reveal class="grid gap-12 lg:grid-cols-12 lg:gap-16">
+      <!-- Details -->
+      <div class="lg:col-span-4">
+        <div class="space-y-10">
+          <div>
+            <h2 class="eyebrow">Email</h2>
+            <ul class="mt-4 space-y-2">
+              <li>
+                <a
+                  href={`mailto:${contact.general}`}
+                  class="text-lead text-accent-ink underline underline-offset-4"
+                >
+                  {contact.general}
+                </a>
+              </li>
+              <li class="text-[0.9375rem] text-muted">
+                Press:{' '}
+                <a href={`mailto:${contact.press}`} class="hover:text-ink">
+                  {contact.press}
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h2 class="eyebrow">Visit</h2>
+            <address class="mt-4 not-italic leading-relaxed text-muted">
+              {site.name}<br />
+              {contact.address.street}<br />
+              {contact.address.postalCode} {contact.address.city}<br />
+              {contact.address.country}
+            </address>
+          </div>
+
+          <div>
+            <h2 class="eyebrow">Follow</h2>
+            <ul class="mt-4 flex flex-wrap gap-2">
+              {
+                socials.map((social) => (
+                  <li>
+                    <a
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="btn btn-secondary !px-4 !py-2 !text-sm"
+                    >
+                      {social.label}
+                      <span class="sr-only">(opens in a new tab)</span>
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+
+          <div>
+            <h2 class="eyebrow">Better routes</h2>
+            <ul class="mt-4 space-y-2">
+              {
+                requests.map((request) => (
+                  <li>
+                    <a
+                      href={withBase(`/request-for-ai/${request.id}`)}
+                      class="text-[0.9375rem] text-muted transition-colors hover:text-ink"
+                    >
+                      Request for AI {request.data.shortTitle}
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="lg:col-span-8">
+        <RequestForm
+          subject="General enquiry"
+          title="Send us a message"
+          lead="We read everything and reply within five working days."
+          fields={fields}
+        />
+      </div>
+    </Reveal>
+  </section>
+</BaseLayout>

@@ -1,0 +1,143 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Reveal from '../../components/Reveal.astro';
+import RuledList from '../../components/RuledList.astro';
+import RuledRow from '../../components/RuledRow.astro';
+import Figure from '../../components/Figure.astro';
+import { withBase } from '../../lib/url';
+
+export async function getStaticPaths() {
+  const startups = await getCollection('startups', ({ data }) => !data.draft);
+
+  const newestFirst = [...startups].sort(
+    (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf(),
+  );
+
+  return startups.map((startup) => {
+    const others = newestFirst.filter((s) => s.id !== startup.id);
+    const sameSector = others.filter((s) =>
+      s.data.sectors.some((sec) => startup.data.sectors.includes(sec)),
+    );
+    // Sector matches first, then top up with the newest companies. A startup
+    // in a sector of its own would otherwise have no onward navigation.
+    const related = [
+      ...sameSector,
+      ...others.filter((s) => !sameSector.includes(s)),
+    ].slice(0, 3);
+
+    return { params: { slug: startup.id }, props: { startup, related } };
+  });
+}
+
+const { startup, related } = Astro.props;
+const d = startup.data;
+const { Content } = await render(startup);
+---
+
+<BaseLayout title={d.name} description={d.tagline}>
+  <section class="shell pt-20 pb-14 md:pt-28">
+    <Reveal>
+      <a
+        href={withBase('/startups')}
+        class="eyebrow inline-flex items-center gap-2 transition-colors hover:text-ink"
+      >
+        <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M11 7H3m0 0 3.5-3.5M3 7l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        All startups
+      </a>
+
+      <div class="mt-10 flex flex-wrap items-center gap-5">
+        <img
+          src={withBase(d.logo)}
+          alt={`${d.name} logo`}
+          width="64"
+          height="64"
+          class="mark size-16 p-2"
+        />
+        <h1 class="text-h1">{d.name}</h1>
+      </div>
+
+      <p class="mt-7 max-w-2xl text-lead text-muted">{d.tagline}</p>
+
+      {
+        d.website && (
+          <a
+            href={d.website}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-secondary mt-8"
+          >
+            Visit website
+            <span class="sr-only">(opens in a new tab)</span>
+          </a>
+        )
+      }
+    </Reveal>
+  </section>
+
+  <!-- Facts rail + story -->
+  <section class="shell story pb-section">
+    {/* Rail first in the DOM: on a narrow screen the facts read as a summary
+        above the article, and on desktop CSS places them to the right. */}
+    <Reveal class="story-rail">
+      <dl class="rail-facts">
+        <div>
+          <dt class="eyebrow">Stage</dt>
+          <dd class="rail-figure">{d.stage}</dd>
+        </div>
+        <div>
+          <dt class="eyebrow">Cohort</dt>
+          <dd>{d.cohort}</dd>
+        </div>
+        <div>
+          <dt class="eyebrow">Sectors</dt>
+          <dd>{d.sectors.join(', ')}</dd>
+        </div>
+        <div>
+          <dt class="eyebrow">Founders</dt>
+          <dd>
+            {d.founders.length > 0
+              ? d.founders.map((f) => `${f.name} (${f.role})`).join(', ')
+              : '—'}
+          </dd>
+        </div>
+      </dl>
+    </Reveal>
+
+    <Reveal class="story-body prose">
+      <Content />
+    </Reveal>
+  </section>
+
+  {d.image && (
+    <section class="shell">
+      <Figure src={d.image} alt={d.imageAlt} />
+    </section>
+  )}
+
+  {
+    related.length > 0 && (
+      <section class="shell pb-section" aria-labelledby="related">
+        <Reveal>
+          <div class="border-t border-ink pt-5">
+            <h2 id="related" class="font-mono text-[0.6875rem] font-medium uppercase tracking-[0.12em]">
+              Related companies
+            </h2>
+          </div>
+          <RuledList class="mt-8">
+            {related.map((item) => (
+              <RuledRow
+                title={item.data.name}
+                summary={item.data.tagline}
+                meta={`${item.data.stage} · ${item.data.cohort}`}
+                href={`/startups/${item.id}`}
+              />
+            ))}
+          </RuledList>
+        </Reveal>
+      </section>
+    )
+  }
+</BaseLayout>

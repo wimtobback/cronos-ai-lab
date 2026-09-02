@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { primaryNav } from '../config/site';
+import { withBase } from '../lib/url';
+---
+
+<BaseLayout title="Page not found" description="That page does not exist." noindex>
+  <section class="shell flex min-h-[60vh] items-center py-24">
+    <div class="max-w-2xl">
+      <p class="eyebrow">Error 404</p>
+      <h1 class="mt-6 text-h1">We could not find that page.</h1>
+      <p class="mt-7 text-lead text-muted">
+        The link may be out of date, or the page may have moved. Everything
+        below still works.
+      </p>
+
+      <ul class="mt-10 flex flex-wrap gap-3">
+        <li><a href={withBase('/')} class="btn btn-primary">Home</a></li>
+        {
+          primaryNav.map((item) => (
+            <li>
+              <a href={withBase(item.href)} class="btn btn-secondary">
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

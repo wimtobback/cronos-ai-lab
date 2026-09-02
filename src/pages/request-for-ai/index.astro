@@ -1,0 +1,72 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Reveal from '../../components/Reveal.astro';
+import RuledList from '../../components/RuledList.astro';
+import RuledRow from '../../components/RuledRow.astro';
+import { withBase } from '../../lib/url';
+import { contact } from '../../config/site';
+
+const requests = (await getCollection('requests')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+---
+
+<BaseLayout
+  title="Request for AI"
+  description="Five ways to work with Cronos AI Lab — bring us a challenge, scale your startup, join as talent, found a company, or build together as a lab."
+>
+  <section class="shell pt-20 pb-16 md:pt-28 md:pb-20">
+    <Reveal class="max-w-3xl">
+      <p class="eyebrow">Request for AI</p>
+      <h1 class="mt-6 text-h1">Five ways to work with the Lab.</h1>
+      <p class="mt-7 text-lead text-muted">
+        Five routes in, below. Each one asks different questions, because the
+        answer we owe you is different. We reply to every submission within
+        five working days, including the ones where the honest answer is no.
+      </p>
+    </Reveal>
+  </section>
+
+  <!-- Same treatment as the homepage overview: a numbered ruled list. -->
+  <section class="on-ink" aria-labelledby="offerings">
+    <div class="shell py-section">
+      <h2 id="offerings" class="sr-only">The five offerings</h2>
+
+      <RuledList>
+        {
+          requests.map((request, i) => (
+            <RuledRow
+              lead
+              index={String(i + 1).padStart(2, '0')}
+              title={request.data.shortTitle}
+              summary={request.data.summary}
+              meta="Apply"
+              href={`/request-for-ai/${request.id}`}
+            />
+          ))
+        }
+      </RuledList>
+    </div>
+  </section>
+
+  <section class="shell py-section">
+    <Reveal class="max-w-2xl">
+      <p class="eyebrow">Still not sure</p>
+      <h2 class="mt-4 text-h2">
+        Pick the closest one. We will redirect you if it is wrong.
+      </h2>
+      <p class="mt-6 text-lead text-muted">
+        None of these is a form that disappears into a queue. If your challenge
+        is really a founder conversation, or your collaboration proposal is
+        really a hiring problem, we will say so and point you at the right route.
+      </p>
+      <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+        <a href={withBase('/contact')} class="btn btn-primary">Talk to us first</a>
+        <a href={`mailto:${contact.general}`} class="btn btn-secondary">
+          {contact.general}
+        </a>
+      </div>
+    </Reveal>
+  </section>
+</BaseLayout>

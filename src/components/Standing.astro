@@ -1,0 +1,39 @@
+---
+// src/components/Standing.astro
+// Movement 2. A dense horizontal strip: where the Cronos Group relationship
+// belongs — as context for credibility, not as a hero trophy.
+import { getCollection } from 'astro:content';
+import { withBase } from '../lib/url';
+
+const startups = (await getCollection('startups', ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.name.localeCompare(b.data.name),
+);
+---
+
+<section class="shell standing" aria-label="Standing">
+  <p class="standing-line">
+    <span class="eyebrow">Built inside The Cronos Group</span>
+    <span class="standing-detail">
+      9,000 engineers across 600 companies. The Lab is the venture arm.
+    </span>
+  </p>
+
+  <ul class="standing-logos">
+    {
+      startups.map((s) => (
+        <li class="standing-logo">
+          <img
+            class="mark"
+            src={withBase(s.data.logo)}
+            alt={s.data.name}
+            width="28"
+            height="28"
+            loading="lazy"
+            decoding="async"
+          />
+          <span>{s.data.name}</span>
+        </li>
+      ))
+    }
+  </ul>
+</section>
