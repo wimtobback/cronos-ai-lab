@@ -15,7 +15,10 @@ export function withBase(path: string): string {
   if (!path.startsWith('/')) return path;
 
   const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-  return path === '/' ? `${base}/` : `${base}${path}`;
+  // The root gets no trailing slash either: `trailingSlash: 'never'` makes
+  // `/cronos-ai-lab/` a 404 in `astro dev`. With an empty base (a custom
+  // domain) the root is still `/`.
+  return path === '/' ? base || '/' : `${base}${path}`;
 }
 
 /**

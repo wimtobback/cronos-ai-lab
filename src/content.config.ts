@@ -49,6 +49,11 @@ const challenges = defineCollection({
     summary: z.string(),
     /** Headline result, e.g. "68% faster triage" */
     outcome: z.string().optional(),
+    /** `engagement` is a documented, client-approved case. `illustrative` is a
+     * composite scenario: it renders labelled as such, with no year, so its
+     * figures never read as achieved results. Required, so a new entry has to
+     * make the choice. */
+    status: z.enum(['engagement', 'illustrative']),
     year: z.number().int(),
     publishDate: z.coerce.date(),
     draft: z.boolean().default(false),

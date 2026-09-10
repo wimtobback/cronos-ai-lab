@@ -7,6 +7,9 @@ const DIST = new URL('../dist/', import.meta.url).pathname;
 // the deploy configuration.
 const CONFIG = readFileSync(new URL('../astro.config.mjs', import.meta.url).pathname, 'utf8');
 const BASE = (CONFIG.match(/base:\s*['"]([^'"]+)['"]/)?.[1] ?? '').replace(/\/$/, '');
+// With trailingSlash: 'never', `astro dev` 404s on any page URL ending in "/".
+// resolves() strips the slash before looking in dist/, so check it separately.
+const NO_TRAILING_SLASH = /trailingSlash:\s*['"]never['"]/.test(CONFIG);
 
 /** Strip the deploy base off an app-absolute href. Returns null if it is missing. */
 function unbase(pathname) {
@@ -91,6 +94,11 @@ for (const file of htmlFiles) {
     }
 
     const [rawPath, hash] = raw.split('#');
+
+    if (NO_TRAILING_SLASH && rawPath.length > 1 && rawPath.endsWith('/')) {
+      broken.push({ page, attr, raw, why: "trailing slash, but trailingSlash is 'never' -> 404 in astro dev" });
+      continue;
+    }
 
     const pathname = unbase(rawPath);
     if (pathname === null) {

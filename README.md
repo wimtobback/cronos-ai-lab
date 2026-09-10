@@ -37,7 +37,7 @@ Nothing about the Lab is hardcoded in a template. Three content collections in
 
 | Collection | Files | Renders as |
 |---|---|---|
-| `startups` | 8 | `/startups`, `/startups/<slug>`, homepage cards |
+| `startups` | 5 | `/startups`, `/startups/<slug>`, homepage cards |
 | `challenges` | 6 | `/challenges`, `/challenges/<slug>`, homepage cards |
 | `requests` | 5 | `/request-for-ai/<slug>`, homepage overview, footer, contact page |
 

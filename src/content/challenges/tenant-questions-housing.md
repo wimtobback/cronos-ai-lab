@@ -3,7 +3,8 @@ title: "Answering tenants before anyone picks up the phone"
 client: "A social housing association"
 sector: "Public sector"
 summary: "Eight staff answering the same forty questions, in a call queue that peaked at 25 minutes. Not a chatbot problem — a routing and record problem."
-outcome: "71% resolved at first contact"
+outcome: "71% resolved without staff"
+status: illustrative
 year: 2025
 publishDate: 2025-08-14
 ---

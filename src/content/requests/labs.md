@@ -15,14 +15,14 @@ youGet:
   - title: Joint teams on real problems
     body: We put our engineers alongside yours on a live customer challenge, with one roadmap and one definition of done. Shared credit, shared blame, and a system somebody actually depends on at the end.
   - title: Deployment at real scale
-    body: For technology partners, a route from early access to production inside the organisations the Cronos Group already works in — with honest feedback about where your product breaks under enterprise conditions.
+    body: For technology partners, a route from early access to production inside the organisations the Cronos Group already works in — with clear feedback about where your product breaks under enterprise conditions.
   - title: Applied testbeds and publication
-    body: For research groups, access to industrial data and problems that do not exist in public datasets. We support joint publication, and we will not sit on a result because it is commercially awkward.
+    body: For research groups, access to industrial data and problems that do not exist in public datasets. Joint publication is on the table, with publication rights agreed in writing before the work starts.
   - title: People in both directions
     body: Secondments and residencies that actually run — your researchers embedded with us, our engineers embedded with you, for long enough to matter.
 process:
   - title: Introduction
-    body: Tell us what your lab works on and what you would want to do together. We reply within five working days, and we say no when there is no genuine overlap.
+    body: Tell us what your lab works on and what you would want to do together. We reply within five working days.
   - title: Scoping session
     body: A working session between the two teams — not a commercial meeting. We look for a problem that neither lab would take on alone.
   - title: Pilot collaboration

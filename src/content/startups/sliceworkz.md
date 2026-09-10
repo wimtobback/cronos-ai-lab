@@ -13,7 +13,7 @@ Most software projects start fast and then slow to a crawl. Complexity compounds
 
 ## Four methods, as the foundation
 
-Domain-driven design to ground the solution in business concepts. Event modelling to specify it visually, in business language, with the people who understand the domain. Vertical slice architecture so features stay isolated and can be built in parallel at constant cost. Event sourcing for history, audit and compliance. Not bolted on as practices — the structure everything else is built on.
+In plain terms: the software is organised around how the business works, so each feature can be built and changed on its own. Four methods make that hold. Domain-driven design to ground the solution in business concepts. Event modelling to specify it visually, in business language, with the people who understand the domain. Vertical slice architecture so features stay isolated and can be built in parallel at constant cost. Event sourcing for history, audit and compliance. Not bolted on as practices — the structure everything else is built on.
 
 ## AI-native by design, not retrofit
 

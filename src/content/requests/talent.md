@@ -5,11 +5,11 @@ icon: lucide:users
 eyebrow: For engineers, researchers & designers
 summary: Work on AI systems that reach production, alongside people who have shipped them.
 heroHeadline: Build AI that people actually depend on.
-heroLead: There is a lot of AI work that never leaves a notebook. This is not that. Everything the Lab builds is aimed at real operators inside real organisations, which means shorter feedback loops, harder constraints, and far more interesting problems than another benchmark.
+heroLead: Everything the Lab builds is aimed at real operators inside real organisations, which means shorter feedback loops, harder constraints, and far more interesting problems than another benchmark.
 forWho:
-  - Engineers who want their work in production, not in a deck
+  - Engineers who want to see their work running in production
   - ML and research people who like messy, real-world data more than clean datasets
-  - Product designers who can hold their own in a room full of engineers
+  - Product designers who enjoy shaping systems side by side with engineers and researchers
   - Anyone weighing whether to join a venture or start one — we can help with both
 youGet:
   - title: Real problems, real users

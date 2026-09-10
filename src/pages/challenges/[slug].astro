@@ -5,10 +5,14 @@ import Reveal from '../../components/Reveal.astro';
 import RuledList from '../../components/RuledList.astro';
 import RuledRow from '../../components/RuledRow.astro';
 import Figure from '../../components/Figure.astro';
+import CtaBand from '../../components/CtaBand.astro';
 import { withBase } from '../../lib/url';
+import { challengeEyebrow, isIllustrative, outcomeLabel, rowIndex, rowMeta } from '../../lib/challenges';
 
 export async function getStaticPaths() {
-  const challenges = await getCollection('challenges', ({ data }) => !data.draft);
+  const challenges = (await getCollection('challenges', ({ data }) => !data.draft)).sort(
+    (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf(),
+  );
 
   return challenges.map((challenge) => ({
     params: { slug: challenge.id },
@@ -21,6 +25,7 @@ export async function getStaticPaths() {
 
 const { challenge, related } = Astro.props;
 const d = challenge.data;
+const illustrative = isIllustrative(d);
 const { Content } = await render(challenge);
 ---
 
@@ -37,7 +42,7 @@ const { Content } = await render(challenge);
         All challenges
       </a>
 
-      <p class="eyebrow mt-10">{d.sector} &middot; {d.year}</p>
+      <p class="eyebrow mt-10">{challengeEyebrow(d)}</p>
       <h1 class="mt-5 text-h1">{d.title}</h1>
       <p class="mt-7 text-lead text-muted">{d.summary}</p>
     </Reveal>
@@ -50,7 +55,7 @@ const { Content } = await render(challenge);
       <dl class="rail-facts">
         {d.outcome && (
           <div>
-            <dt class="eyebrow">Result</dt>
+            <dt class="eyebrow">{outcomeLabel(d)}</dt>
             <dd class="rail-figure is-result">{d.outcome}</dd>
           </div>
         )}
@@ -62,11 +67,18 @@ const { Content } = await render(challenge);
           <dt class="eyebrow">Sector</dt>
           <dd>{d.sector}</dd>
         </div>
-        <div>
-          <dt class="eyebrow">Year</dt>
-          <dd>{d.year}</dd>
-        </div>
+        {!illustrative && (
+          <div>
+            <dt class="eyebrow">Year</dt>
+            <dd>{d.year}</dd>
+          </div>
+        )}
       </dl>
+      {illustrative && (
+        <p class="mt-8 text-[0.9375rem] text-muted">
+          An illustrative scenario, not a documented client result.
+        </p>
+      )}
     </Reveal>
 
     <Reveal class="story-body prose">
@@ -82,9 +94,16 @@ const { Content } = await render(challenge);
     </section>
   )}
 
+  {/* The direct next step comes before more browsing: a reader who got this
+      far has a problem in mind. */}
+  <CtaBand eyebrow="Have a problem like this?" href="/request-for-ai/challenges" label="Bring us a challenge">
+    Tell us what breaks today and what it costs. We reply within five working
+    days.
+  </CtaBand>
+
   {
     related.length > 0 && (
-      <section class="shell pb-section" aria-labelledby="related">
+      <section class="shell py-section" aria-labelledby="related">
         <Reveal>
           <div class="border-t border-ink pt-5">
             <h2 id="related" class="font-mono text-[0.6875rem] font-medium uppercase tracking-[0.12em]">
@@ -94,9 +113,9 @@ const { Content } = await render(challenge);
           <RuledList class="mt-8">
             {related.map((item) => (
               <RuledRow
-                index={String(item.data.year)}
+                index={rowIndex(item.data)}
                 title={item.data.title}
-                meta={item.data.sector}
+                meta={rowMeta(item.data)}
                 href={`/challenges/${item.id}`}
               />
             ))}

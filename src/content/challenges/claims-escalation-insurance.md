@@ -4,7 +4,8 @@ client: "An insurance group"
 sector: "Insurance"
 summary: "Escalated claims cost roughly nine times a normal one. Most gave off signals weeks before anyone noticed."
 outcome: "31% fewer escalations"
-year: 2024
+status: illustrative
+year: 2023
 publishDate: 2024-11-26
 ---
 

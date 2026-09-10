@@ -558,7 +558,14 @@
     z-index: 1;
     padding-block: clamp(6rem, 4rem + 12vw, 14rem);
   }
+  /* On desktop the padding answers to viewport height, not only width. The
+   * width-only clamp put ~218px above the copy at 1280×720, and with a
+   * four-line 128px headline the CTA sat below the fold on every laptop
+   * screen. The matching headline cap sits beside `text-display` in
+   * Statement.astro. Mobile keeps the values above: at 390×844 the headline,
+   * lead and CTA already fit together. */
   @media (width >= 48rem) {
+    .statement-body { padding-block: clamp(3rem, 13vh - 1.5rem, 14rem); }
     .statement-copy { grid-column: 1 / span 8; }
   }
 
@@ -623,6 +630,13 @@
     .work-lead  { grid-column: 1 / span 7; }
     .work-rest  { grid-column: 8 / -1; padding-left: 2.5rem; border-left: 1px solid var(--color-rule); }
   }
+
+  /* --- Movement 3b: The 90 days -------------------------------------------
+   * Four top-ruled steps across the full width (ProcessSteps.astro), between
+   * the 7/5 work split and the companies' sticky intro, so no two
+   * neighbouring sections share a grid pattern. No split, so nothing here
+   * competes with `.shell > *` and there is no source-order dependency. */
+  .process { padding-block: clamp(4rem, 3rem + 6vw, 8rem); row-gap: 3rem; border-top: 1px solid var(--color-rule); }
 
   /* --- Movement 4: The companies -------------------------------------------
    * Sticky intro beside a scrolling ruled list. Placed after `.shell` in

@@ -4,6 +4,7 @@ client: "A specialty chemicals manufacturer"
 sector: "Manufacturing"
 summary: "The answer to most plant failures was already written down — in handwriting, in three languages, in a basement."
 outcome: "12,000 documents made searchable"
+status: illustrative
 year: 2025
 publishDate: 2025-12-03
 ---
