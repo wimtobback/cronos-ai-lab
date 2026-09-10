@@ -95,14 +95,14 @@ const { Content } = await render(startup);
           <dt class="eyebrow">Sectors</dt>
           <dd>{d.sectors.join(', ')}</dd>
         </div>
-        <div>
-          <dt class="eyebrow">Founders</dt>
-          <dd>
-            {d.founders.length > 0
-              ? d.founders.map((f) => `${f.name} (${f.role})`).join(', ')
-              : '—'}
-          </dd>
-        </div>
+        {/* No row at all rather than a bare dash: an empty Founders line reads
+            as "nobody", when it only means the names are not published yet. */}
+        {d.founders.length > 0 && (
+          <div>
+            <dt class="eyebrow">Founders</dt>
+            <dd>{d.founders.map((f) => `${f.name} (${f.role})`).join(', ')}</dd>
+          </div>
+        )}
       </dl>
     </Reveal>
 

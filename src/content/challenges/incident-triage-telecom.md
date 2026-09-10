@@ -1,9 +1,10 @@
 ---
-title: "Cutting incident triage from 40 minutes to 4"
+title: "Cutting incident triage from 40 minutes to under five"
 client: "A national telecom operator"
 sector: "Telecommunications"
 summary: "Network incidents were being routed by hand through three levels of support before anyone qualified saw them. We built the router."
 outcome: "89% faster triage"
+status: illustrative
 year: 2026
 publishDate: 2026-07-09
 ---

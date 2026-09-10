@@ -3,7 +3,7 @@ title: Request for AI Startups
 shortTitle: Startups
 icon: lucide:rocket
 eyebrow: For existing AI companies
-summary: Already building? We bring distribution, enterprise data and 9,000 engineers.
+summary: Already building? We bring distribution, enterprise data and a group of more than 9,000 people.
 heroHeadline: You have the product. We have the customers who need it.
 heroLead: The hardest part of an enterprise AI startup is not the model — it is the eighteen months it takes to get into a serious organisation and stay there. The Cronos Group already sits inside hundreds of them. We open that door and help you survive what is behind it.
 forWho:
@@ -39,7 +39,7 @@ formFields:
     label: Stage
     type: select
     required: true
-    options: [Pre-product, Prototype with design partners, Paying customers, Seed funded, Series A or later]
+    options: [Prototype with design partners, Paying customers, Seed funded, Series A or later]
     half: true
   - { name: teamSize, label: Team size, type: text, half: true }
   - name: product

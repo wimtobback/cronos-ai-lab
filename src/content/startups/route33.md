@@ -21,7 +21,7 @@ Token budgets are set per team, project or key and enforced at the edge: when sp
 
 ## Built for the EU
 
-Traffic can be routed exclusively through EU-hosted data centres, with a Belgian contract, invoice and support line. The compliance posture — GDPR and DPA terms, data residency, right to erasure, ISO 27001 and NIS2 audited under Cronos, and alignment with the EU AI Act — is the part that makes the difference between a gateway an engineering team likes and one a legal team will sign.
+Traffic can be routed exclusively through EU-hosted data centres, with a Belgian contract, invoice and support line. That is the starting point for a gateway a legal team can review, not only one an engineering team likes. Compliance and certification details are set out on [route33.ai](https://route33.ai).
 
 ## Where it is now
 

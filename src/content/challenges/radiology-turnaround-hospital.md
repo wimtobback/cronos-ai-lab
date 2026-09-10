@@ -4,6 +4,7 @@ client: "A university hospital network"
 sector: "Healthcare"
 summary: "Reporting backlogs were pushing routine scans to a four-day turnaround. We rebuilt the worklist, not the radiologist."
 outcome: "94% same-day turnaround"
+status: illustrative
 year: 2024
 publishDate: 2024-06-19
 ---

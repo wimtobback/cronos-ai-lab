@@ -4,7 +4,8 @@ client: "A European logistics group"
 sector: "Logistics"
 summary: "Freight invoices were audited by sampling because nobody could check 1.2 million lines a year. We checked all of them."
 outcome: "€2.1M recovered in year one"
-year: 2026
+status: illustrative
+year: 2025
 publishDate: 2026-04-22
 ---
 

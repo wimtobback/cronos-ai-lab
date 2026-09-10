@@ -17,7 +17,7 @@ youGet:
   - title: Deployment at real scale
     body: For technology partners, a route from early access to production inside the organisations the Cronos Group already works in — with honest feedback about where your product breaks under enterprise conditions.
   - title: Applied testbeds and publication
-    body: For research groups, access to industrial data and problems that do not exist in public datasets. We support joint publication, and we will not sit on a result because it is commercially awkward.
+    body: For research groups, access to industrial data and problems that do not exist in public datasets. Joint publication is on the table, with publication rights agreed in writing before the work starts.
   - title: People in both directions
     body: Secondments and residencies that actually run — your researchers embedded with us, our engineers embedded with you, for long enough to matter.
 process:
