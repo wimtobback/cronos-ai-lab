@@ -5,6 +5,7 @@ import Statement from '../components/Statement.astro';
 import Standing from '../components/Standing.astro';
 import RuledList from '../components/RuledList.astro';
 import RuledRow from '../components/RuledRow.astro';
+import ProcessSteps from '../components/ProcessSteps.astro';
 import Close from '../components/Close.astro';
 import { withBase } from '../lib/url';
 import { site } from '../config/site';
@@ -24,6 +25,8 @@ const anyIllustrative = allChallenges.some((c) => isIllustrative(c.data));
 const requests = (await getCollection('requests')).sort(
   (a, b) => a.data.order - b.data.order,
 );
+// The 90-day process is the Challenges route's own process, not a second copy.
+const challengesRoute = requests.find((r) => r.id === 'challenges');
 ---
 
 <BaseLayout title={site.name} description={site.description}>
@@ -64,6 +67,19 @@ const requests = (await getCollection('requests')).sort(
       </RuledList>
     </div>
   </section>
+
+  {/* ===== Movement 3b: The 90 days ==================================== */}
+  {challengesRoute && (
+    <section class="shell process" aria-labelledby="process-heading">
+      <div>
+        <p class="eyebrow">How an engagement runs</p>
+        <h2 id="process-heading" class="mt-4 max-w-2xl text-h2">
+          From intake to a verdict in 90 days.
+        </h2>
+      </div>
+      <ProcessSteps steps={challengesRoute.data.process} />
+    </section>
+  )}
 
   {/* ===== Movement 4: The companies =================================== */}
   <section class="shell companies" aria-labelledby="companies-heading">

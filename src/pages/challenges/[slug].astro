@@ -5,6 +5,7 @@ import Reveal from '../../components/Reveal.astro';
 import RuledList from '../../components/RuledList.astro';
 import RuledRow from '../../components/RuledRow.astro';
 import Figure from '../../components/Figure.astro';
+import CtaBand from '../../components/CtaBand.astro';
 import { withBase } from '../../lib/url';
 import { challengeEyebrow, isIllustrative, outcomeLabel, rowIndex, rowMeta } from '../../lib/challenges';
 
@@ -93,9 +94,16 @@ const { Content } = await render(challenge);
     </section>
   )}
 
+  {/* The direct next step comes before more browsing: a reader who got this
+      far has a problem in mind. */}
+  <CtaBand eyebrow="Have a problem like this?" href="/request-for-ai/challenges" label="Bring us a challenge">
+    Tell us what breaks today and what it costs. We reply within five working
+    days.
+  </CtaBand>
+
   {
     related.length > 0 && (
-      <section class="shell pb-section" aria-labelledby="related">
+      <section class="shell py-section" aria-labelledby="related">
         <Reveal>
           <div class="border-t border-ink pt-5">
             <h2 id="related" class="font-mono text-[0.6875rem] font-medium uppercase tracking-[0.12em]">

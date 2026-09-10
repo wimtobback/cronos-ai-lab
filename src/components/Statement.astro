@@ -11,9 +11,21 @@
 // No stats grid: PLACEHOLDER.md records those numbers as fabricated, and
 // putting fabricated figures above the fold is a launch risk regardless of
 // how they look.
+// On desktop the headline is also capped by viewport height, so a laptop
+// screen shows headline, lead and CTA together. The cap sits beside
+// `text-display` rather than in the token: check:design R2 reads the token's
+// clamp() max, and a nested min() there would break that parse.
+import { getCollection } from 'astro:content';
 import { Picture } from 'astro:assets';
 import { withBase } from '../lib/url';
 import statementImage from '../assets/photography/cronos-incubator.webp';
+
+// Enterprise challenges stay the one primary action. The other routes in are
+// quiet text links, so founders, talent and labs see their door without
+// scrolling and without five buttons competing.
+const otherRoutes = (await getCollection('requests'))
+  .filter((r) => r.id !== 'challenges')
+  .sort((a, b) => a.data.order - b.data.order);
 ---
 
 <section class="on-ink statement" aria-labelledby="statement-heading">
@@ -35,21 +47,43 @@ import statementImage from '../assets/photography/cronos-incubator.webp';
     <div class="statement-copy">
       <p class="eyebrow">Kontich &middot; part of The Cronos Group</p>
 
-      <h1 id="statement-heading" class="mt-6 text-display">
+      <h1
+        id="statement-heading"
+        class="mt-6 text-display md:text-[length:min(var(--text-display),12.5vh)]"
+      >
         Enterprise AI problems, built into companies.
       </h1>
 
-      <p class="mt-8 max-w-xl text-lead text-muted-invert">
-        The Lab pairs founders and engineers with the real operational problems
-        inside Belgium&rsquo;s largest organisations, then builds and funds the
-        companies that solve them.
+      <p class="mt-8 max-w-xl text-lead text-muted-invert md:max-w-2xl">
+        The Lab works with organisations and founders to test AI against real
+        operational problems, reach a measured decision within 90 days, and
+        build a company when the opportunity supports one.
       </p>
 
-      <div class="mt-10">
+      <div class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
         <a href={withBase('/request-for-ai/challenges')} class="btn btn-primary">
           Bring us a challenge
         </a>
+        <a
+          href={withBase('/startups')}
+          class="text-[0.9375rem] text-paper underline underline-offset-4 decoration-1 hover:decoration-2"
+        >
+          See the portfolio
+        </a>
       </div>
+
+      <p class="mt-6 text-[0.9375rem] text-muted-invert">
+        Also a way in for{' '}
+        {otherRoutes.map((r, i) => (
+          <>
+            {i > 0 && (i === otherRoutes.length - 1 ? ' and ' : ', ')}
+            <a
+              href={withBase(`/request-for-ai/${r.id}`)}
+              class="text-paper underline underline-offset-4 decoration-1 hover:decoration-2"
+            >{r.data.shortTitle.toLowerCase()}</a>
+          </>
+        ))}.
+      </p>
     </div>
   </div>
 </section>

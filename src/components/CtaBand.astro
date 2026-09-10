@@ -1,0 +1,27 @@
+---
+// src/components/CtaBand.astro
+// Closing ink band: a short prompt on the left, one primary action on the
+// right. The slot is the prompt sentence.
+import Reveal from './Reveal.astro';
+import { withBase } from '../lib/url';
+
+interface Props {
+  eyebrow: string;
+  /** Internal path, passed through withBase(). */
+  href: string;
+  label: string;
+}
+const { eyebrow, href, label } = Astro.props;
+---
+
+<section class="on-ink">
+  <div class="shell py-20">
+    <Reveal class="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <p class="eyebrow">{eyebrow}</p>
+        <p class="mt-4 max-w-lg text-h3"><slot /></p>
+      </div>
+      <a href={withBase(href)} class="btn btn-primary shrink-0">{label}</a>
+    </Reveal>
+  </div>
+</section>

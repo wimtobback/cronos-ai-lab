@@ -20,6 +20,8 @@ interface Props {
   fields: FormField[];
   /** Fallback mailbox shown when the form backend is not configured. */
   email?: string;
+  /** id of the visible heading, for a wrapping section's aria-labelledby. */
+  headingId?: string;
 }
 
 const {
@@ -28,6 +30,7 @@ const {
   lead,
   fields,
   email = contact.general,
+  headingId = 'apply-heading',
 } = Astro.props;
 
 const inputClass =
@@ -35,7 +38,7 @@ const inputClass =
 ---
 
 <div class="rounded-[2px] border border-rule bg-paper-raised p-6 sm:p-10">
-  <h2 class="text-h2">{title}</h2>
+  <h2 id={headingId} class="text-h2">{title}</h2>
   <p class="mt-4 max-w-xl text-lead text-muted">{lead}</p>
 
   {
