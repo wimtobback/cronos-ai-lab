@@ -10,7 +10,7 @@ export const site = {
   url: 'https://cronos-ai-lab.be',
   tagline: 'Ninety days from problem to verdict.',
   description:
-    'Cronos AI Lab runs enterprise AI challenges to a measured verdict in ninety days, then builds the companies that follow, with founders, talent and customers across Belgium and beyond.',
+    'Cronos AI Lab runs enterprise AI challenges to a measured verdict in 90 days, then builds the companies that follow, with founders, talent and customers across Belgium and beyond.',
   parentOrg: 'The Cronos Group',
   locale: 'en',
   foundedYear: 2024,

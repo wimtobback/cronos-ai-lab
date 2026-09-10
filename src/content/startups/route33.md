@@ -1,5 +1,5 @@
 ---
-name: "Route_33"
+name: "route_33"
 tagline: "One governed gateway to every LLM, with every token on the ledger."
 logo: "/logos/route33.svg"
 cohort: 2026
@@ -9,7 +9,7 @@ website: "https://route33.ai"
 publishDate: 2026-08-28
 ---
 
-Most organisations arrive at the same place: every team has picked its own model, its own provider and its own API key, and nobody can say what any of it costs or what has been sent outside the building. route_33 is an AI gateway built inside De Cronos Groep that puts one governed door in front of all of it.
+Most organisations arrive at the same place: every team has picked its own model, its own provider and its own API key, and nobody can say what any of it costs or what has been sent outside the building. route_33 is an AI gateway built inside The Cronos Group that puts one governed door in front of all of it.
 
 ## One endpoint, every model
 

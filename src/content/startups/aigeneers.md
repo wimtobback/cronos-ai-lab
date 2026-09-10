@@ -1,6 +1,6 @@
 ---
 name: "AIGENEERS"
-tagline: "A European AI knowledge platform, written by the forward deployed engineers it is named after."
+tagline: "A European AI knowledge platform, written by engineers who build AI inside the organisations that use it."
 logo: "/logos/aigeneers.svg"
 cohort: 2026
 sectors: ["Media & publishing", "Community"]
@@ -15,7 +15,7 @@ AIGENEERS is two things at once: a name for a job that did not have one, and the
 
 ## The role
 
-An AIGENEER is a forward deployed engineer — someone who works inside the problem rather than alongside it, pairing human judgement with the speed and scale of AI systems. Their own framing is that AI should act as an exoskeleton for human expertise, amplifying it rather than replacing it: humans not merely in the loop, but in control. The title is already in use elsewhere in the network — Sliceworkz lists a Lead AIGeneer on its team.
+An AIGENEER is an engineer who works inside the problem rather than alongside it (the industry term is a forward deployed engineer), pairing human judgement with the speed and scale of AI systems. Their own framing is that AI should act as an exoskeleton for human expertise, amplifying it rather than replacing it: humans not merely in the loop, but in control. The title is already in use elsewhere in the network — Sliceworkz lists a Lead AIGeneer on its team.
 
 ## The platform
 

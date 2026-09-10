@@ -29,7 +29,7 @@ process:
   - title: Partnership
     body: Commercial partnership, investment, or both — structured around what you actually need.
 formTitle: Tell us about your startup
-formLead: We read every submission. Be specific about traction — vague numbers are the fastest route to a no.
+formLead: We read every submission. Lead with your strongest traction metric, and give us the number.
 formFields:
   - { name: name, label: Your name, type: text, required: true, half: true }
   - { name: email, label: Email, type: email, required: true, half: true }
